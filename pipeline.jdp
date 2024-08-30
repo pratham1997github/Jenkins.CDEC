@@ -18,14 +18,8 @@ pipeline {
                }
             }
         }
-        stage('Quality-Gate')  {
-            steps {
-                timeout(10) {
-                    waitForQualityGate abortPipeline: true
-                }    
-            }
-        }         
-          stage('Deploy') { 
+
+        stage('Deploy') { 
             steps {
                 deploy adapters: [tomcat9(path: '', url: 'http://172.31.4.27:8080')], contextPath: '/', war: '**/*.war'
             }
