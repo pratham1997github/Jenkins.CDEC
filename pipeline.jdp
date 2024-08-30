@@ -1,6 +1,5 @@
 pipeline {
     agent any 
-
     stages {
         stage('Pull') { 
             steps {
@@ -14,14 +13,14 @@ pipeline {
         }
         stage('Test') { 
             steps {
-                withSonarQubeEnv('sonar') { // Provide the SonarQube installation name
+                withSonarQubeEnv(installationName: 'sonar', credentialsId: 'sonar-cred') {
                     sh '/opt/maven/bin/mvn sonar:sonar'
-                }
+               }
             }
         }
         stage('Quality-Gate')  {
             steps {
-                timeout(time: 10, unit: 'MINUTES') { // Corrected timeout syntax
+                timeout(10) {
                     waitForQualityGate abortPipeline: true
                 }    
             }
@@ -33,3 +32,4 @@ pipeline {
         }
     }
 }
+
